@@ -11,14 +11,16 @@ app = FastAPI()
 # Enable CORS (Allows ESP32 to access the API)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Change "*" to specific ESP32 IP if needed
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-model = whisper.load_model("small", device='cuda')
+
+model = whisper.load_model("small", device=device)
 
 
 @app.post("/transcribe/")
@@ -43,4 +45,4 @@ async def transcribe_audio(file: UploadFile = File(...)):
 
 # Run the API
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

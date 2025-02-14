@@ -10,7 +10,7 @@ WiFiServer server(80);
 
 void setup() {
   Serial.begin(9600);
-  myServo.attach(4);
+  myServo.attach(18);
   WiFi.softAP(ssid, password);
   server.begin();
   Serial.println("ESP32 Web Server Started!");
@@ -24,7 +24,7 @@ void loop() {
     
     if (request.indexOf("/light/on") != -1) {
       Serial.println("Light ON");
-      myServo.write(180);
+      myServo.write(60);
     }
     if (request.indexOf("/light/off") != -1) {
       Serial.println("Light OFF");

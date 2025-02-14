@@ -5,18 +5,30 @@ BluetoothSerial SerialBT;
 Servo myServo;
 
 void setup() {
-  Serial.begin(9600);
-  SerialBT.begin("ESP32-Control"); 
+  Serial.begin(9600);       // USB Serial (PC)
+  SerialBT.begin("ESP32-Control");  // Bluetooth Serial
   myServo.attach(18);
-  Serial.println("ESP32 Bluetooth Control Started!");
+  Serial.println("ESP32 Control Started!");
 }
 
 void loop() {
+  String command = "";
+
+  // Check Serial (USB from PC)
+  if (Serial.available()) {
+    command = Serial.readStringUntil('\n');
+  }
+
+  // Check Bluetooth
   if (SerialBT.available()) {
-    String command = SerialBT.readStringUntil('\n');
-    command.trim();
+    command = SerialBT.readStringUntil('\n');
+  }
+
+  command.trim();  // Remove extra spaces or newlines
+
+  if (command.length() > 0) {
     Serial.println("Received: " + command);
-    
+
     if (command == "light on") {
       Serial.println("Light ON");
       myServo.write(60);

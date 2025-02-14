@@ -1,6 +1,7 @@
 import requests
 
 url = "http://127.0.0.1:8000/transcribe/"
+
 file_path = "test.wav"
 
 with open(file_path, "rb") as f:
